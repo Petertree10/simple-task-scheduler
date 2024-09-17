@@ -31,11 +31,16 @@ class TaskScheduler:
         self.taskQueue.remove(task)
 
     def view_tasks(self):
-        for task in self.taskQueue:
-            print()
+        l = self.taskQueue
+        l.sort()
+        print('Tasks in priority order:')
+        for i, task in enumerate(l):
+            print(f'{i+1}. [Priority {task.priority}] {task.name}: {task.description}')
+        print('\n')
 
-    def complete_task():
-        pass
+    def complete_task(self):
+        task = heapq.heappop(self.taskQueue)
+        print(f'Next task completed: [Priority {task.priority}] {task.name}: {task.description}\n')
 
 def prompt_user():
     print('1. Add a new task\n2. View tasks\n3. Complete the next task\n4. Exit\n')
@@ -54,6 +59,8 @@ if __name__ == "__main__":
         elif prompt == '4':
             print('Exiting the Task Scheduler. Goodbye!')
             sys.exit()
+        else:
+            print('Option invalid: Please try again.\n')
 
 
 
