@@ -22,23 +22,38 @@ class TaskScheduler:
     
     def add_task(self):
         name = input('Task name: ')
+        if name.strip() == "":
+            print('Invalid input: Task name cannot be empty.\n')
+            return
         description = input('Task description: ')
-        priority = input('Priority (1-10): ')
+        if description.strip() == "":
+            print('Invalid input: Task description cannot be empty.\n')
+            return
+        try:
+            priority = int(input('Priority (1-10): '))
+            if not 1 <= priority <= 10:
+                raise ValueError
+        except ValueError:
+            print('Invalid input: Priority must be a number between 1 and 10.\n')
+            return
+        
         heapq.heappush(self.taskQueue, Task(name, description, priority))
         print('Task added!\n')
 
-    def remove_task(self, task):
-        self.taskQueue.remove(task)
-
     def view_tasks(self):
-        l = self.taskQueue
-        l.sort()
+        if len(self.taskQueue) == 0:
+            print('No tasks available to view.\n')
+            return
+        sorted_tasks = sorted(self.taskQueue)
         print('Tasks in priority order:')
-        for i, task in enumerate(l):
+        for i, task in enumerate(sorted_tasks):
             print(f'{i+1}. [Priority {task.priority}] {task.name}: {task.description}')
         print('\n')
 
     def complete_task(self):
+        if len(self.taskQueue) == 0:
+            print('No tasks available to complete.\n')
+            return
         task = heapq.heappop(self.taskQueue)
         print(f'Next task completed: [Priority {task.priority}] {task.name}: {task.description}\n')
 
